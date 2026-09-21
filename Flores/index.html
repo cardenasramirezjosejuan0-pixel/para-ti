@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Te lo mereces, porque eres una mujer maravillosa</title>
+  <style>
+    :root {
+      --petal-color: #ffd000;
+      --petal-inner: #ff9d00;
+      --center-color: #3b220c;
+      --stem-color: #38761d;
+      --leaf-color: #559b2f;
+      --ribbon-color: #e63946;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at center, #1b2838 0%, #0d131a 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      color: #fff;
+      padding: 15px 10px 30px;
+    }
+
+    /* Partículas de polen flotando */
+    .pollen-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .pollen {
+      position: absolute;
+      background: rgba(255, 220, 100, 0.7);
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(105vh) scale(0.6);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.8;
+      }
+      80% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(-10vh) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Tarjeta de Mensaje */
+    .card {
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 20px 28px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 520px;
+      width: 90%;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      margin-bottom: 10px; /* Reducido para elevar el ramo */
+      animation: fadeInDown 1.2s ease-out forwards;
+    }
+
+    .card h1 {
+      color: #ffe066;
+      font-size: 1.7rem;
+      margin-bottom: 8px;
+      text-shadow: 0 0 12px rgba(255, 224, 102, 0.4);
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #f1f3f5;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Escenario del Ramo - ELEVADO */
+    .bouquet-stage {
+      position: relative;
+      width: 440px;
+      height: 520px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 5;
+      transform: translateY(-45px); /* <--- Sube el ramo 45px hacia arriba */
+    }
+
+    /* Tallo y Envoltorio */
+    .stem {
+      position: absolute;
+      bottom: 60px;
+      width: 5px;
+      background: linear-gradient(to top, #2d5a15, var(--stem-color));
+      border-radius: 4px;
+      transform-origin: bottom center;
+      box-shadow: inset 1px 0 2px rgba(0, 0, 0, 0.3);
+    }
+
+    .wrap-cone {
+      position: absolute;
+      bottom: 20px;
+      width: 0;
+      height: 0;
+      border-left: 55px solid transparent;
+      border-right: 55px solid transparent;
+      border-top: 150px solid #ede0d4;
+      z-index: 7;
+      filter: drop-shadow(0 8px 15px rgba(0, 0, 0, 0.4));
+    }
+
+    .ribbon {
+      position: absolute;
+      bottom: 135px;
+      width: 48px;
+      height: 18px;
+      background: var(--ribbon-color);
+      border-radius: 8px;
+      z-index: 8;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .ribbon::before,
+    .ribbon::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      width: 14px;
+      height: 35px;
+      background: var(--ribbon-color);
+      border-radius: 4px;
+    }
+    .ribbon::before {
+      left: 6px;
+      transform: rotate(20deg);
+    }
+    .ribbon::after {
+      right: 6px;
+      transform: rotate(-20deg);
+    }
+
+    /* Estructura del Girasol */
+    .sunflower {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      transform: scale(0);
+      animation: bloom 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      z-index: 6;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .sunflower:hover {
+      transform: scale(1.15) !important;
+      z-index: 12 !important;
+    }
+
+    .petals-layer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+
+    .petal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 14px;
+      height: 32px;
+      background: linear-gradient(to top, var(--petal-inner), var(--petal-color));
+      border-radius: 50% 50% 20% 20%;
+      transform-origin: 50% 90%;
+      margin-left: -7px;
+      margin-top: -29px;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .center-disc {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 32px;
+      height: 32px;
+      margin-left: -16px;
+      margin-top: -16px;
+      background: radial-gradient(circle, #5a3818 20%, var(--center-color) 85%);
+      border-radius: 50%;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
+    }
+
+    @keyframes bloom {
+      0% {
+        transform: scale(0) rotate(-45deg);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="pollen-container" id="pollenBox"></div>
+
+  <section class="card">
+    <h1>Te lo mereces por todo tu esfuerzo</h1>
+    <p id="typedText">
+      "PRINCESA 👑 Yo vi esta flor 🌻 y pense en ti porque es bonita 🥰yyyy mm bueno en realidad a mi no me gusta, 
+      pero creí que te gustaría porque tu si eres bonita❤️‍🩹"
+    </p>
+  </section>
+
+  <main class="bouquet-stage" id="bouquetStage">
+    <div class="wrap-cone"></div>
+    <div class="ribbon"></div>
+  </main>
+
+  <script>
+    const flowerData = [
+      { x: -130, y: 190, h: 220, rot: -36, delay: 0.1, z: 2 },
+      { x: 130,  y: 190, h: 220, rot: 36,  delay: 0.2, z: 2 },
+      { x: -95,  y: 240, h: 240, rot: -25, delay: 0.3, z: 3 },
+      { x: 95,   y: 240, h: 240, rot: 25,  delay: 0.4, z: 3 },
+      { x: -50,  y: 285, h: 270, rot: -14, delay: 0.5, z: 3 },
+      { x: 50,   y: 285, h: 270, rot: 14,  delay: 0.6, z: 3 },
+      { x: 0,    y: 310, h: 290, rot: 0,   delay: 0.7, z: 3 },
+      { x: -110, y: 145, h: 180, rot: -30, delay: 0.8, z: 4 },
+      { x: 110,  y: 145, h: 180, rot: 30,  delay: 0.9, z: 4 },
+      { x: -70,  y: 195, h: 210, rot: -18, delay: 1.0, z: 4 },
+      { x: 70,   y: 195, h: 210, rot: 18,  delay: 1.1, z: 4 },
+      { x: -28,  y: 235, h: 230, rot: -8,  delay: 1.2, z: 4 },
+      { x: 28,   y: 235, h: 230, rot: 8,   delay: 1.3, z: 4 },
+      { x: -80,  y: 105, h: 150, rot: -22, delay: 1.4, z: 5 },
+      { x: 80,   y: 105, h: 150, rot: 22,  delay: 1.5, z: 5 },
+      { x: -42,  y: 150, h: 170, rot: -12, delay: 1.6, z: 5 },
+      { x: 42,   y: 150, h: 170, rot: 12,  delay: 1.7, z: 5 },
+      { x: 0,    y: 180, h: 190, rot: 0,   delay: 1.8, z: 5 },
+      { x: -30,  y: 95,  h: 130, rot: -7,  delay: 1.9, z: 6 },
+      { x: 30,   y: 95,  h: 130, rot: 7,   delay: 2.0, z: 6 }
+    ];
+
+    const stage = document.getElementById('bouquetStage');
+
+    flowerData.forEach((f) => {
+      const stem = document.createElement('div');
+      stem.className = 'stem';
+      stem.style.height = `${f.h}px`;
+      stem.style.left = `calc(50% + ${f.x * 0.45}px)`;
+      stem.style.transform = `rotate(${f.rot * 0.65}deg)`;
+      stem.style.zIndex = f.z - 1;
+      stage.appendChild(stem);
+
+      const flower = document.createElement('div');
+      flower.className = 'sunflower';
+      flower.style.left = `calc(50% + ${f.x}px - 35px)`;
+      flower.style.bottom = `${f.y}px`;
+      flower.style.animationDelay = `${f.delay}s`;
+      flower.style.zIndex = f.z;
+
+      const layer = document.createElement('div');
+      layer.className = 'petals-layer';
+      const petalCount = 16;
+      for (let i = 0; i < petalCount; i++) {
+        const petal = document.createElement('div');
+        petal.className = 'petal';
+        petal.style.transform = `rotate(${(360 / petalCount) * i}deg)`;
+        layer.appendChild(petal);
+      }
+
+      const center = document.createElement('div');
+      center.className = 'center-disc';
+
+      flower.appendChild(layer);
+      flower.appendChild(center);
+      stage.appendChild(flower);
+    });
+
+    const pollenBox = document.getElementById('pollenBox');
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'pollen';
+      const size = Math.random() * 5 + 3;
+      p.style.width = `${size}px`;
+      p.style.height = `${size}px`;
+      p.style.left = `${Math.random() * 100}vw`;
+      p.style.animationDuration = `${Math.random() * 6 + 5}s`;
+      p.style.animationDelay = `${Math.random() * 5}s`;
+      pollenBox.appendChild(p);
+    }
+  </script>
+</body>
+</html>
